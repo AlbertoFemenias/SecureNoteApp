@@ -44,6 +44,7 @@ public class CreatePasswordActivity extends AppCompatActivity {
 
                         //enter app
                         Intent intent = new Intent (getApplicationContext(), MainActivity.class);
+                        intent.putExtra("PLAINPASS", text1);
                         startActivity(intent);
                         finish();
                     } else {

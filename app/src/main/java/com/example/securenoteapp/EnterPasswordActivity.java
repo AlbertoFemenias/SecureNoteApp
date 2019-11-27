@@ -37,6 +37,7 @@ public class EnterPasswordActivity extends AppCompatActivity {
                 if (text.equals(password)) {
                     //open app
                     Intent intent = new Intent (getApplicationContext(), MainActivity.class);
+                    intent.putExtra("PLAINPASS", text);
                     startActivity(intent);
                     finish();
                 } else {
