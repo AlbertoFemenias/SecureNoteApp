@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import static com.example.securenoteapp.Crypto.hashSalted;
+
 public class CreatePasswordActivity extends AppCompatActivity {
 
     EditText editText1, editText2;
@@ -30,6 +32,7 @@ public class CreatePasswordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String text1 = editText1.getText().toString();
                 String text2 = editText2.getText().toString();
+                String hashedPass;
 
                 if (text1.equals("") || text2.equals("")){
                     //there is no pass
@@ -39,14 +42,21 @@ public class CreatePasswordActivity extends AppCompatActivity {
                         //both passws equal
                         SharedPreferences settings = getSharedPreferences("PREFS", 0);
                         SharedPreferences.Editor editor = settings.edit();
-                        editor.putString("password", text1);
-                        editor.apply();
+                        try {
+                            hashedPass = hashSalted(text1);
+                            editor.putString("password", hashedPass);
+                            editor.apply();
 
-                        //enter app
-                        Intent intent = new Intent (getApplicationContext(), MainActivity.class);
-                        intent.putExtra("PLAINPASS", text1);
-                        startActivity(intent);
-                        finish();
+                            //enter app
+                            Intent intent = new Intent (getApplicationContext(), MainActivity.class);
+                            intent.putExtra("PLAINPASS", text1);
+                            startActivity(intent);
+                            finish();
+                        } catch (Exception e) {
+                            Toast.makeText(CreatePasswordActivity.this, "Error saving password", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+
                     } else {
                         //not equal passws
                         Toast.makeText(CreatePasswordActivity.this, "Passwords don't match", Toast.LENGTH_SHORT).show();

@@ -22,7 +22,8 @@
         </activity>
         <activity android:name=".EnterPasswordActivity" />
         <activity android:name=".CreatePasswordActivity" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity"
+            />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import static com.example.securenoteapp.Crypto.hashSalted;
+
 public class EnterPasswordActivity extends AppCompatActivity {
 
     EditText editText;
@@ -33,8 +35,14 @@ public class EnterPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String text = editText.getText().toString();
+                String hashedText = null;
+                try {
+                    hashedText = hashSalted(text);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                if (text.equals(password)) {
+                if (password.equals(hashedText)) {
                     //open app
                     Intent intent = new Intent (getApplicationContext(), MainActivity.class);
                     intent.putExtra("PLAINPASS", text);

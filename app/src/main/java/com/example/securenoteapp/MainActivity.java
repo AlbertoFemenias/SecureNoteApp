@@ -22,13 +22,22 @@ import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import static com.example.securenoteapp.Crypto.decrypt;
+import static com.example.securenoteapp.Crypto.encrypt;
+
 public class MainActivity extends AppCompatActivity {
     private static final String FILE_NAME = "example.txt";
 
     EditText mEditText;
-    String AES = "AES";
-
     String password;
+
+
+    //PREVENT APP RUNNING IN BACKGROUND FOR SAFETY
+    @Override
+    public void onPause(){
+        super.onPause();
+        System.exit(0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
             fos.write(encryptedText.getBytes());           //SAVE ENCRYPTED INPUT
 
             mEditText.getText().clear();
-            Toast.makeText(this, "Saved to " + getFilesDir() + "/" + FILE_NAME,
-                    Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Saved to " + getFilesDir() + "/" + FILE_NAME, Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -104,37 +112,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-    private String decrypt(String outputString, String password) throws Exception{
-        SecretKeySpec key = generateKey(password);
-        Cipher c = Cipher.getInstance(AES);
-        c.init(Cipher.DECRYPT_MODE, key);
-        byte[] decodedValue = Base64.decode(outputString, Base64.DEFAULT);
-        byte[] decValue = c.doFinal(decodedValue);
-        String decryptedValue = new String(decValue);
-        return decryptedValue;
-    }
-
-    private String encrypt(String Data, String password) throws Exception{
-        SecretKeySpec key = generateKey(password);
-        Cipher c = Cipher.getInstance(AES);
-        c.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encVal = c.doFinal(Data.getBytes());
-        String encryptedValue = Base64.encodeToString(encVal, Base64.DEFAULT);
-        return encryptedValue;
-    }
-
-    private SecretKeySpec generateKey(String password) throws Exception{
-        final MessageDigest digest = MessageDigest.getInstance("SHA-512");
-        byte[] bytes = password.getBytes("UTF-8");
-        digest.update(bytes,0,bytes.length);
-        byte[] key = digest.digest();
-        key = Arrays.copyOfRange(key,0,32);
-        SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
-        return secretKeySpec;
-    }
-
-
 
 
 }
