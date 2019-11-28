@@ -18,6 +18,12 @@ public class EnterPasswordActivity extends AppCompatActivity {
     Button button;
     String password;
 
+    public void openChangePass (View view) {
+        Intent intent = new Intent (getApplicationContext(), ChangePasswordActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +64,5 @@ public class EnterPasswordActivity extends AppCompatActivity {
 
 
     }
-
 
 }
