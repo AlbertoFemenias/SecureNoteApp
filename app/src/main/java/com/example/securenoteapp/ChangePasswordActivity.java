@@ -141,6 +141,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                             Toast.makeText(ChangePasswordActivity.this, "New passwords don't match", Toast.LENGTH_SHORT).show();
                         }
                     }
+                }else{
+                    Toast.makeText(ChangePasswordActivity.this, "Old password incorrect", Toast.LENGTH_SHORT).show();
                 }
 
             }
